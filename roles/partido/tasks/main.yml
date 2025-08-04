@@ -1,0 +1,16 @@
+- name: Obtener info aleatoria del segundo tenista desde API
+  uri:
+    url: https://randomuser.me/api/?results=1
+    return_content: yes
+  register: api_result
+
+- name: Crear contenido del partido en archivo partido.txt
+  template:
+    src: partido.txt.j2
+    dest: /vagrant/partido.txt
+  vars:
+    second_first_name: "{{ (api_result.content | from_json).results[0].name.first }}"
+    second_last_name: "{{ (api_result.content | from_json).results[0].name.last }}"
+    second_city: "{{ (api_result.content | from_json).results[0].location.city }}"
+    second_id: "{{ (api_result.content | from_json).results[0].id.value | default('N/A') }}"
+    fecha_partido: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"

@@ -1,0 +1,10 @@
+- name: Generar archivo del partido
+  hosts: web
+  vars_files:
+    - roles/partido/vars/partido_vars.yml
+  vars:
+    first_name: Ruth
+    last_name: Paniahua
+    city: Madrid
+  roles:
+    - partido
